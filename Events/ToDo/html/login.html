@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/login_signup.css" type="text/css">
+    <title>Login</title>
+</head>
+<body onload="session()">
+    <div class="navbar">
+    </div>
+    <div id="message"></div>
+    <h1 class="main-heading">Log in</h1>
+    <div class="form-container">
+        <input class="input-text-box" type="text" placeholder="Enter email" id="emailL" name="emailL" required>
+        <br><br>
+        <input class="input-text-box" type="password" placeholder="Enter password" id="pwL" name="pwL" required>
+        <br><br>
+        <input class="btn" type="submit" value="Sign up" onclick="validate()">
+    </div>
+
+    <script>
+        let navbar = document.getElementsByClassName('navbar')[0]
+        let navList = document.createElement('ul')
+        navList.classList.add('nav-list')
+        let home = document.createElement('li')
+        let a;
+        a = document.createElement('a')
+        a.textContent = 'Home'
+        a.href = 'index.html'
+        home.classList.add('nav-item')
+        home.appendChild(a)
+        // home.textContent = 'Home'
+        navList.appendChild(home)
+        // home.classList.add('active')
+
+        a = document.createElement('a')
+        let li = document.createElement('li')
+        a.href = 'login.html'
+        a.textContent = 'Login'
+        li.classList.add('active')
+        li.appendChild(a)
+        li.classList.add('nav-item')
+        navList.appendChild(li)
+        navbar.appendChild(navList)
+
+        navbar.appendChild(navList)
+        // checking if an user is already in session
+        function session() {
+            if (localStorage.getItem('activeUser')) {
+                localStorage.setItem('message', 'Already logged in!')
+                window.location.href = 'index.html'
+                return
+            }
+        }
+
+        let message = localStorage.getItem('message')
+        let category = localStorage.getItem('category')
+        let messageDiv = document.getElementById('message')
+        if (message) {
+            document.getElementById('message').textContent = message;
+            document.getElementById('message').style.display = 'block'
+            messageDiv.style.background = category === 'success'? 'green': 'red'
+        } else {
+            document.getElementById('message').style.display = 'none'
+        }
+        localStorage.removeItem('message')
+
+        let users = JSON.parse(localStorage.getItem('users'))
+        // console.log(users)
+        let email = document.getElementById('emailL')
+        let password = document.getElementById('pwL')
+        function validate() {
+            if (email.value.length === 0 || password.value.length === 0) {
+                localStorage.setItem('message', 'Field(s) cannot be empty')
+                localStorage.setItem('category', 'danger')
+                console.log('EMPTY FIELDS')
+                window.location.href = 'login.html'
+                return
+            }
+
+            for (const user of users) {
+                if (user.email === email.value && user.password === password.value) {
+                    localStorage.setItem('message', 'LOGIN SUCCESSFUL')
+                    localStorage.setItem('activeUser', user.email)
+                    localStorage.setItem('category', 'success')
+                    window.location.href = 'index.html'
+                    return
+                }
+            }
+            localStorage.setItem('message', 'INVALID CREDENTIALS')
+            localStorage.setItem('category', 'danger')
+            window.location.href = 'login.html'
+        }
+    </script>
+</body>
+</html>l

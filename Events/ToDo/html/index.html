@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/main.css" type="text/css">
+    <title>Home Page</title>
+</head>
+<body>
+    <div class="navbar">
+    </div>
+    <div id="message"></div>
+    <h1 class="main-heading">TODO PAGE</h1>
+    <div class="btn-container">
+        <a href="./signup.html">
+            <button class="btn" id="signup">Signup</button>
+        </a>
+
+        <a href="./login.html">
+            <button class="btn" id="login">Login</button>
+        </a>
+    </div>
+
+    <script>
+        let message = localStorage.getItem('message')
+        let category = localStorage.getItem('category')
+        let messageDiv = document.getElementById('message')
+        if (message) {
+            document.getElementById('message').textContent = message;
+            document.getElementById('message').style.display = 'block'
+            console.log(message)
+            messageDiv.style.background = category === 'success'? 'green': 'red'
+        } else {
+            document.getElementById('message').style.display = 'none'
+        }
+        localStorage.removeItem('message')
+        
+        // navbar 
+        let navbar = document.getElementsByClassName('navbar')[0]
+        let navList = document.createElement('ul')
+        navList.classList.add('nav-list')
+        let home = document.createElement('li')
+        let a;
+        a = document.createElement('a')
+        a.textContent = 'Home'
+        a.href = 'index.html'
+        home.classList.add('nav-item')
+        home.appendChild(a)
+        // home.textContent = 'Home'
+        navList.appendChild(home)
+        home.classList.add('active')
+
+        // a = document.createElement('a')
+        // let li = document.createElement('li')
+        // a.href = 'login.html'
+        // a.textContent = 'Login'
+        // // li.classList.add('active')
+        // li.appendChild(a)
+        // li.classList.add('nav-item')
+        // navList.appendChild(li)
+
+
+        // checking if theres a user in session
+        if (localStorage.getItem('activeUser')) {
+            console.log('ACTIVE')
+            a = document.createElement('a')            
+            a.textContent = 'Log out'
+            a.href = 'logout.html'
+            let li = document.createElement('li')
+            // li.innherHTML = a
+            li.style.float = "right"
+            li.classList.add('nav-item')
+            li.appendChild(a)
+            navList.appendChild(li)
+
+            a = document.createElement('a')
+            a.textContent = 'Dashboard'
+            a.href = 'dashboard.html'
+            li = document.createElement('li')
+            // li.innerHTML = a
+            li.classList.add('nav-item')
+            li.appendChild(a)
+            navList.appendChild(li)
+            console.log(navList)
+
+            // no use of displaying the login / signup if user is already there in session
+            document.getElementsByClassName('btn-container')[0].style.display = 'none'
+        } else {
+            a = document.createElement('a')
+            let li = document.createElement('li')
+            a.href = 'login.html'
+            a.textContent = 'Login'
+            // li.classList.add('active')
+            li.appendChild(a)
+            li.classList.add('nav-item')
+            navList.appendChild(li)
+            navbar.appendChild(navList)
+            document.getElementsByClassName('btn-container')[0].style.display = 'block'
+        }
+
+        // console.log(localStorage)
+
+        navbar.appendChild(navList)
+    </script>
+</body>
+</html>

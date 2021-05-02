@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events</title>
+    <style>
+        div {
+            border-radius: 50px
+        }
+
+        body {
+            background: #212121
+        }
+        #board {
+            width: 50%;
+            height: 800px;
+            background: cyan;
+            /* min-height: 1%; */
+            /* min-width: 1%; */
+            margin: 1% 20%;
+            /* border: 1px solid black */
+            box-shadow: 2px 5px 15px 10px white;
+        }
+
+        .box {
+            width: 25%;
+            /* min-width: 20%; */
+            height: 245px;
+            float: left;
+            margin: 10px 4%;
+            background-color: teal;
+            text-align: center;
+            font-size: 200px
+        }
+
+        #result {
+        margin: 15% 5%;
+        position: absolute;
+        width: 35%;
+        height: 50px;
+        padding: 5% 2%;
+        background: black;
+        display: none;
+        text-align: center;
+        color: cyan;
+        font-size: 40px
+        }
+
+        #restart {
+            padding: 1%;
+            border-radius: 15px;
+            color: white;
+            background-color: blue;
+        }
+
+        div #restart {
+            display: none;
+            margin: 0% 43%
+        }
+    </style>
+</head>
+<body>
+    <div id="board">
+        <div id="1" class="box"></div>
+        <div id="2" class="box"></div>
+        <div id="3" class="box"></div>
+        <div id="4" class="box"></div>
+        <div id="5" class="box"></div>
+        <div id="6" class="box"></div>
+        <div id="7" class="box"></div>
+        <div id="8" class="box"></div>
+        <div id="9" class="box"></div>
+    </div>
+
+    <div>
+        <button id="restart">Restart!?</button>
+    </div>
+    <script>
+        let boxes = [
+            [0, 0, 0],
+            [0, 0, 0],
+            [0, 0, 0],
+        ]
+        let gameOver = false;
+        let timer;
+        let result = document.createElement('div')
+        let turn = 1
+        let board = document.getElementById('board')
+        result.id = 'result'
+        board.appendChild(result);
+        
+        let checkWinner = char => {
+            let hCount = 0, vCount = 0
+            for (let i = 0; i < boxes.length; i++) {
+                hCount = 0;
+                vCount = 0;
+                for (let j = 0; j < boxes[0].length; ++j) {
+                    hCount += boxes[i][j] === char? 1: 0
+                    vCount += boxes[j][i] === char? 1: 0
+                }
+                if (hCount === 3 || vCount === 3) {
+                    return true
+                }
+            } // horizontal and vertical check
+
+            let diagCount = 0
+            for (let i = 0; i < 3; ++i) {
+                diagCount += boxes[i][i] === char? 1: 0;
+            }
+
+            if (diagCount === 3) {
+                return true
+            }
+
+            diagCount = 0;
+            for (let i = 0, j = 2; j >= 0 && i <= 2; ++i, --j) {
+                diagCount += boxes[i][j] === char? 1: 0
+            }
+
+            return diagCount === 3
+        }
+
+        let move = (e) => {
+            // console.log(bo, gameOver)
+            e.stopPropagation()
+            if (gameOver) {
+                board.removeEventListener('click', () => {
+                    result.style.display = 'block'
+                    result.innerHTML = "GAME OVER!!"
+                })
+                return
+            } 
+
+            if (turn === 9) {
+                result.style.display = 'block'
+                result.innerHTML = `IT'S A DRAW!!`
+                gameOver = true
+            }
+            clearTimeout(timer)
+            
+            // console.log(e.target)
+            let box = e.target
+            let char;
+            let boxID = +box.id
+            // if the box is empty
+            if (box.textContent.length === 0) {
+                if (turn % 2 === 1) {
+                    char = 'X'
+                } else {
+                    char = 'O'
+                }
+                boxes[parseInt((boxID - 1) / 3)][(boxID - 1) % 3] = char === 'X'? 1: 2
+                box.textContent = char
+                if (checkWinner(char === 'X'? 1: 2)) {
+                    // console.log(result)
+                    result.style.display = 'block'
+                    result.innerHTML = `PLAYER ${char} HAS WON THE GAME`
+                    gameOver = true
+                }
+                ++turn
+            } else {
+                clearTimeout(timer)
+                result.style.display = 'block'
+                result.innerHTML = `CANNOT CHOOSE THIS BLOCK` 
+                timer = setTimeout(() => {
+                    result.style.display = 'none'
+                }, 1500)
+                // console.log('Clicked box ' + boxID + " which is filled")
+            }
+        }
+
+        
+        board.addEventListener('click', move)
+
+        let restart = document.getElementById('restart')
+        restart.style.display = 'inline'
+        restart.addEventListener('click', () => {
+            boxes = [
+                [0, 0, 0],
+                [0, 0, 0],
+                [0, 0, 0]
+            ]
+
+            for (const d of board.childNodes) {
+                d.innerHTML = ''
+            }
+            // restart.style.display = 'none'
+            turn = 1
+            gameOver = false
+            result.style.display = 'none'
+            // console.log(boxes)
+        })
+
+        // play()
+        // clearTimeout(timer)
+        // result.style.display = 'none'
+    </script>
+</body>
+</html>

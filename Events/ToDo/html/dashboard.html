@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/main.css">
+    <title>Dashboard</title>
+    <style>
+        #createList {
+            background: aqua;
+            color: black
+        }
+
+        #createList:hover {
+            background: blue;
+            color: white
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+    </div>
+    <h1 class="main-heading">Dashboard</h1>
+
+    <div class="btn-container">
+        <a href="./createList.html">
+            <button class="btn" id="createList">Create List</button>
+        </a>
+    </div>
+
+    <table>
+        <thead>
+            <th>#</th>
+            <th>List Name</th>
+        </thead>
+    </table>
+
+
+
+    <script>
+        let navbar = document.getElementsByClassName('navbar')[0]
+        let navList = document.createElement('ul')
+        navList.classList.add('nav-list')
+        let home = document.createElement('li')
+        home.classList.add('nav-item')        
+        let a;
+        a = document.createElement('a')
+        a.textContent = 'Home'
+        a.href = 'index.html'
+        home.appendChild(a)
+        navList.appendChild(home) 
+
+        // create a new item in localStorage which is an object
+        // where the keys are the users and values are arrays of lists 
+        // pertaining to that particular user
+        // let lists = JSON.parse(localStorage.getItem('lists')).localStorage.getItem('activeUser')
+
+
+
+        // checking if theres a user in session
+        if (localStorage.getItem('activeUser')) {
+            console.log('ACTIVE')
+            a = document.createElement('a')            
+            a.textContent = 'Log out'
+            a.href = 'logout.html'
+            let li = document.createElement('li')
+            // li.innherHTML = a
+            li.style.float = "right"
+            li.classList.add('nav-item')
+            li.appendChild(a)
+            navList.appendChild(li)
+
+            a = document.createElement('a')
+            a.textContent = 'Dashboard'
+            a.href = 'dashboard.html'
+            li = document.createElement('li')
+            // li.innerHTML = a
+            li.classList.add('nav-item')
+            li.appendChild(a)
+            li.classList.add('active')
+            navList.appendChild(li)
+            console.log(navList)
+
+            // no use of displaying the login / signup if user is already there in session
+        }
+        navbar.appendChild(navList)
+
+    </script>
+</body>
+</html>

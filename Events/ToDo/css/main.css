@@ -1,0 +1,88 @@
+body {
+    background: #121212;
+}
+
+.navbar {
+    background: #212121;
+    color: gray;
+    font-size: 25px;
+}
+
+.main-heading {
+    background: #212121;
+    color: white;
+    /* padding-left: 45%; */
+    padding: 2% 0% 2% 35%;
+    width: 25%;
+    border-radius: 0px 30px 30px 0px;
+    margin-top: 2%;
+}
+
+
+#message {
+    display: none;
+    width: 100%;
+    height: auto;
+    color: white;
+    font-size: 30px;
+    padding: 10px;
+    text-align: center;
+}
+
+
+.nav-item {
+    list-style-type: none;
+    display: inline-block;
+    margin-left: 2%;
+    padding: 10px;
+}
+
+.btn {
+    width: 200px;
+    padding: 20px;
+    text-align: center;
+    border-radius: 25px;
+    border: none;
+    font-size: 20px;
+    color: white;
+    margin: 0% 5%
+}
+
+#signup {
+    background: #9FE2BF;
+}
+
+#signup:hover {
+    background:#40E0D0;
+}
+
+#login {
+    background: #5DADE2;
+}
+
+#login:hover {
+    background: #6495ED
+}
+
+
+.btn:hover {
+    box-shadow: 1px 1px 10px 3px gray;
+}
+
+.btn-container {
+    width: 75%;
+    height: auto;
+    /* border: 1px solid gray; */
+    margin: 5% 20%;
+    padding: 1% 10%;
+}
+
+
+a{
+    color: inherit;
+    text-decoration: none
+}
+
+.active {
+    background: white;
+}

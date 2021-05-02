@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+    <link rel="stylesheet" href="../css/login_signup.css" type="text/css">
+    <title>Sign up</title>
+    <style>
+        #messgae {
+            background-color: white
+        }
+    </style>
+</head>
+<body onload="session()">
+    <div class="navbar">
+    </div>
+    <h1 class="main-heading">Sign up!</h1>
+    <div id="message"></div>
+    <div class="form-container">
+        <input class="input-text-box" type="text" placeholder="First name" id="fname" name="fname" required>
+        <br><br>
+        <input class="input-text-box" type="text" placeholder="Last name" id="lname" name="lname" required>
+        <br><br>
+        <input class="input-text-box" type="text" placeholder="Enter email" id="email" name="email" required>
+        <br><br>
+        <input class="input-text-box" type="password" placeholder="Enter password" id="pw" name="pw" required>
+        <br><br>
+        <input class="input-text-box" type="password" placeholder="Confirm Password" id="cpw" name="cpw" required>
+        <br><br>
+        <input class="btn" type="submit" value="Sign up" onclick="validate()">
+        
+    </div>
+
+    <script>
+        function session() {
+            if (localStorage.getItem('activeUser')) {
+                localStorage.setItem('message', 'Already logged in!')
+                window.location.href = 'index.html'
+                return
+            }
+        }
+        
+        let message = localStorage.getItem('message')
+        let category = localStorage.getItem('category')
+        let messageDiv = document.getElementById('message')
+        if (message) {
+            messageDiv.textContent = message;
+            messageDiv.style.background = category === 'success'? 'green': 'red'
+            messageDiv.style.display = 'block'
+        } else {
+            messageDiv.style.display = 'none'
+        }
+        localStorage.removeItem('message')
+
+        let users = JSON.parse(localStorage.getItem('users'))
+        let pw = document.getElementById('pw')
+        let cpw = document.getElementById('cpw')
+        let email = document.getElementById('email')
+        let fname = document.getElementById('fname')
+        let lname = document.getElementById('lname')
+
+        console.log(JSON.parse(localStorage.getItem('users')))
+           
+        function validate() {
+            // implementing the required attribute of input tags
+            if (email.value.length === 0 || fname.value.length === 0 || lname.value.length === 0 || cpw.value.length === 0 || pw.value.length === 0)  {
+                localStorage.setItem('message', 'Field(s) cannot be empty')
+                localStorage.setItem('category', 'danger')
+                console.log('EMPTY FIELDS')
+                window.location.href = 'signup.html'
+                return
+            }
+            
+            // console.log(email.value)         
+
+
+            // validation -> checking if an user with the entered email already exists
+            if (users?.includes(email.value)) {
+                localStorage.setItem('message', `Email already exists`)
+                localStorage.setItem('category', 'danger')
+                window.location.href = "signup.html"
+            } else {
+                if (pw.value === cpw.value) {
+                    let newUser = {
+                        'firstName': fname.value,
+                        'lastName': lname.value,
+                        'email': email.value,
+                        'password': pw.value,
+                    }   // the new user
+
+                    localStorage.setItem('message', 'SIGNUP SUCCESSFUL')
+                    localStorage.setItem('category', 'success')
+                    if (users)
+                        users.push(newUser)
+                    else
+                        users = [newUser]
+                    console.log(users)
+                    localStorage.setItem('users', JSON.stringify(users))
+                    // console.log(JSON.parse(localStorage.getItem('users')))
+                    window.location.href = "login.html"
+                    return
+                } else {
+                    localStorage.setItem('message', 'Password mismatch')
+                    localStorage.setItem('category', 'danger')                 
+                    window.location.href = "signup.html"
+                    return 
+                }
+                localStorage.setItem('message', 'SIGNUP UNSUCCESSFUL')
+                localStorage.setItem('category', 'danger')
+            }      
+        }
+    </script>
+</body>
+</html>

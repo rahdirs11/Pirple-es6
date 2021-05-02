@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logout</title>
+</head>
+<body onload="logout()">
+    <script>
+        function logout() {
+            let users = JSON.parse(localStorage.getItem('users'))
+            let currentUserEmail = localStorage.getItem('activeUser')
+            
+            // console.log('List of all users:\n')
+            // console.log(users)
+
+            let currentUser = users.filter(user => {
+                return user.email === currentUserEmail
+            })
+            
+            // console.log(currentUser[0])
+
+
+            localStorage.removeItem('activeUser')
+            localStorage.setItem('message', `LOGGED OUT`)
+            window.location.href = 'index.html'
+        }
+    </script>
+</body>
+</html>
